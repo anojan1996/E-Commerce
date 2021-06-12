@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+ Add Page
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form method="POST" class="form-add" >
+            {{ form.hidden_tag() }}
+            <br>
+            <h1 class="h3 mb-3 font-weight-normal">
+                Please Add Your Items
+            </h1>
+            {{ form.id.label() }}
+            {{ form.id(class="form-control", placeholder="Id") }}
+            <br>
+            {{ form.name.label() }}
+            {{ form.name(class="form-control", placeholder="Item's Name") }}
+            <br>
+
+            {{ form.price.label() }}
+            {{ form.price(class="form-control", placeholder="Price") }}
+            <br>
+
+            {{ form.barcode.label() }}
+            {{ form.barcode(class="form-control", placeholder="BarCode") }}
+            <br>
+            {{ form.description.label() }}
+            {{ form.description(class="form-control", placeholder="Description") }}
+            <br>
+
+            <br>
+
+            {{ form.submit(class="btn   btn-primary") }}
+
+        </form>
+    </div>
+{% endblock %}
