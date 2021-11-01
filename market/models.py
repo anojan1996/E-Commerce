@@ -1,10 +1,14 @@
-from market import db, login_manager
+from market import db, login_manager, admin
 from market import bcrypt
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
+
+from flask_admin.contrib.sqla import ModelView
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -38,6 +42,7 @@ class User(db.Model, UserMixin):
     def can_sell(self, item_obj):
         return item_obj in self.items
 
+
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True, auto_increment=True)
     name = db.Column(db.String(length=30), nullable=False, unique=True)
@@ -45,6 +50,7 @@ class Item(db.Model):
     barcode = db.Column(db.String(length=12), nullable=False, unique=True)
     description = db.Column(db.String(length=102), nullable=False, unique=True)
     owner = db.Column(db.Integer(), db.ForeignKey('user.id'))
+
     def __repr__(self):
         return f'Item {self.name}'
 
@@ -58,4 +64,11 @@ class Item(db.Model):
         user.budget += self.price
         db.session.commit()
 
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+
 db.create_all()
+admin.add_view(MyModelView(User, db.session))

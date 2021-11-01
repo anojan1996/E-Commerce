@@ -3,12 +3,14 @@ from flask import render_template, redirect, url_for, flash, request
 from market.models import Item, User
 from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm, AddForm
 from market import db
-from flask_login import login_user,logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
+
 
 @app.route('/')
 @app.route('/home')
 def home_page():
     return render_template('home.html')
+
 
 @app.route('/market', methods=['GET', 'POST'])
 @login_required
@@ -43,7 +45,9 @@ def market_page():
     if request.method == "GET":
         items = Item.query.filter_by(owner=None)
         owned_items = Item.query.filter_by(owner=current_user.id)
-        return render_template('market.html', items=items,  purchase_form=purchase_form,owned_items=owned_items, selling_form=selling_form)
+        return render_template('market.html', items=items, purchase_form=purchase_form, owned_items=owned_items,
+                               selling_form=selling_form)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -62,7 +66,8 @@ def register_page():
             flash(f'There was an error with creating a user: {err_msg}', category='danger')
     return render_template('registration.html', form=form)
 
-@app.route('/login', methods=['GET','POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form = LoginForm()
     if form.validate_on_submit():
@@ -79,18 +84,18 @@ def login_page():
     return render_template('login.html', form=form)
 
 
-@app.route('/add', methods=['GET','POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_page():
     form = AddForm()
     if request.method == "POST":
         items = Item(id=form.id.data,
-                              name=form.name.data,
-                              price=form.price.data,
-                              barcode=form.barcode.data,
-                              description=form.description.data)
+                     name=form.name.data,
+                     price=form.price.data,
+                     barcode=form.barcode.data,
+                     description=form.description.data)
         db.session.add(items)
         db.session.commit()
-        #flash(f"Account Created Successfully! You are now logged in as {user_to_create.username}", category='success')
+        # flash(f"Account Created Successfully! You are now logged in as {user_to_create.username}", category='success')
         return redirect(url_for('market_page'))
     return render_template('add_page.html', form=form)
 
