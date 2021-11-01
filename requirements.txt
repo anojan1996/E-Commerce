@@ -1,0 +1,17 @@
+dnspython~=2.1.0
+idna~=3.1
+pip~=21.1.1
+MarkupSafe~=2.0.1
+Werkzeug~=2.0.1
+Jinja2~=3.0.1
+click~=8.0.1
+itsdangerous~=2.0.1
+six~=1.16.0
+WTForms~=2.3.3
+SQLAlchemy~=1.4.15
+greenlet~=1.1.0
+Flask~=2.0.0
+pycparser~=2.20
+setuptools~=56.2.0
+PyMySQL~=1.0.2
+bcrypt~=3.2.0
